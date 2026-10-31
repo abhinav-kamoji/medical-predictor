@@ -34,7 +34,7 @@ An end-to-end Machine Learning web application built with Python and Streamlit t
 
 ## 🚀 Live Demo
 
-Try the live application here: **[MediPredi](https://github.com/abhinav-kamoji/medical-predictor)**
+Try the live application here: **[MediPredi](https://medical-predictor.streamlit.app/)**
 
 ---
 
