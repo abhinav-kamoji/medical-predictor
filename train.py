@@ -1,33 +1,33 @@
-import pandas as pd
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
+import pandas as pd
 import joblib
 
-# 1. Load the dataset (matching your exact file name)
 df = pd.read_csv('medical-charges.csv')
-
-# 2. Preprocess Data
-# This automatically converts 'sex', 'smoker', and 'region' into 0 and 1 columns.
 df_encoded = pd.get_dummies(df, drop_first=True)
 
-# Separate features (X) and target (y)
 X = df_encoded.drop('charges', axis=1)
 y = df_encoded['charges']
 
-# 3. Split into Training (80%) and Testing (20%) sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# 4. Train the Random Forest Model
-model = RandomForestRegressor(n_estimators=100, random_state=42)
-model.fit(X_train, y_train)
+param_grid = {
+    'n_estimators': [50, 100, 200],
+    'max_depth': [None, 10, 20],
+    'min_samples_split': [2, 5]
+}
 
-# 5. Evaluate the model (Optional, but good for your CV)
-predictions = model.predict(X_test)
+rf = RandomForestRegressor(random_state=42)
+grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=5, scoring='r2', n_jobs=-1)
+
+grid_search.fit(X_train, y_train)
+best_model = grid_search.best_estimator_
+
+predictions = best_model.predict(X_test)
 score = r2_score(y_test, predictions)
-print(f"Model R^2 Score: {score:.2f} (Explains {score*100:.1f}% of the variance)")
+print(f"Best Parameters: {grid_search.best_params_}")
+print(f"Optimized Model R^2 Score: {score:.2f}")
 
-# 6. SAVE THE MODEL as model.pkl
-joblib.dump(model, 'model.pkl')
-
-print("Success! model.pkl has been created in your folder.")
+joblib.dump(best_model, 'model.pkl')
+print("Success! Optimized model.pkl has been created.")
