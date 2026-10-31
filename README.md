@@ -12,7 +12,7 @@ An end-to-end Machine Learning web application that predicts medical insurance c
 *   **R² Score:** 86.7%
 
 ## 🚀 Live Demo
-You can try the live application here: [Medical Cost Predictor](https://medical-predictor.streamlit.app/))
+You can try the live application here: [MediPredi](https://medical-predictor.streamlit.app/)
 
 ## 💻 How to Run Locally
 1. Clone the repository: `git clone https://github.com/yourusername/medical-predictor.git`
